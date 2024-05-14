@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout du code') {
+            steps {
+                git 'https://github.com/Linahamza/jenkinsfile.git'
+            }
+        }
+        stage('Installation des dépendances') {
+            steps {
+                sh 'docker-compose run --rm app composer install'
+            }
+        }
+        stage('Tests') {
+            steps {
+                sh 'docker-compose run --rm app php artisan test'
+            }
+        }
+        stage('Déploiement') {
+            steps {
+                sh 'docker-compose up -d --build'
+            }
+        }
+    }
+}
