@@ -19,8 +19,21 @@ pipeline {
         }
         stage('Déploiement') {
             steps {
-                sh 'docker-compose up -d --build'
+                sh 'docker-compose down' // Arrêter et supprimer les conteneurs existants
+                sh 'docker-compose up -d --build' // Démarrer de nouveaux conteneurs
+            }
+        }
+        stage('Vérification du déploiement') {
+            steps {
+                // Ajoutez des étapes de vérification après le déploiement
             }
         }
     }
+    post {
+        failure {
+            // Actions à effectuer en cas d'échec du pipeline
+            echo 'Le pipeline a échoué. Vérifiez les journaux pour plus de détails.'
+        }
+    }
 }
+
